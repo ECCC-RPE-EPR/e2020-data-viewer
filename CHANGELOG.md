@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2024-05-22
+
+### 📚 Documentation
+
+- Update CHANGELOG
+
+### ⚙️ Miscellaneous Tasks
+
+- Upload asset to release
+
+### Build
+
+- *(release)* Bump to v0.1.5
+
 ## [0.1.4] - 2024-05-22
 
 ### 📚 Documentation
