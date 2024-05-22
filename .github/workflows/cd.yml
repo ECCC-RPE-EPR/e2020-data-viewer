@@ -4,6 +4,8 @@ permissions:
   contents: write
 
 on:
+  release:
+    types: [published]
   push:
     tags:
       - v[0-9]+.*
