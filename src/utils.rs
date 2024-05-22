@@ -46,15 +46,12 @@ pub fn initialize_panic_handler() -> Result<()> {
         #[cfg(not(debug_assertions))]
         {
             use human_panic::{handle_dump, print_msg, Metadata};
-            let meta = Metadata {
-                version: env!("CARGO_PKG_VERSION").into(),
-                name: env!("CARGO_PKG_NAME").into(),
-                authors: env!("CARGO_PKG_AUTHORS").replace(':', ", ").into(),
-                homepage: env!("CARGO_PKG_HOMEPAGE").into(),
-            };
+            let version = env!("CARGO_PKG_VERSION");
+            let name = env!("CARGO_PKG_NAME");
+            let metadata = Metadata::new(name, version);
 
-            let file_path = handle_dump(&meta, panic_info);
-            print_msg(file_path, &meta)
+            let file_path = handle_dump(&metadata, panic_info);
+            print_msg(file_path, &metadata)
                 .expect("human-panic: printing error message to console failed");
             eprintln!("{}", msg);
         }
