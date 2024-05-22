@@ -1,6 +1,6 @@
 [package]
 name = "e2020-data-viewer"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["Dheepak Krishnamurthy"]
 build = "build.rs"
