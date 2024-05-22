@@ -51,14 +51,26 @@ jobs:
         run: |
           cargo build --verbose --release
 
-      - name: Package
+      - name: Compress binaries
+        uses: svenstaro/upx-action@v2
+        with:
+          files: ${{ matrix.file }}
+          args: ${{ matrix.args }}
+          strip: ${{ matrix.strip }}
+
+      - name: Build archive
         shell: bash
         run: |
           dirname="e2020-data-viewer-${{ env.VERSION }}-${{ matrix.os }}"
           mkdir "$dirname"
           cp ${{ matrix.file }} "$dirname"
-          tar -czvf "$dirname.tar.gz" "$dirname"
-          echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            7z a "$dirname.zip" "$dirname"
+            echo "ASSET=$dirname.zip" >> $GITHUB_ENV
+          else
+            tar -czvf "$dirname.tar.gz" "$dirname"
+            echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
+          fi
 
       - name: Release
         uses: softprops/action-gh-release@v1
