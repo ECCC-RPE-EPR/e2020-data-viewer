@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.1.4] - 2024-05-22
 
 ### 📚 Documentation
 
 - Update README
+- Update CHANGELOG
 
 ### ⚙️ Miscellaneous Tasks
 
