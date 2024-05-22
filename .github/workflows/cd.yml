@@ -47,54 +47,23 @@ jobs:
           override: true
           components: rustfmt, clippy
 
-      - name: Cache Cargo registry
-        uses: actions/cache@v3
-        with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Cache Cargo target
-        uses: actions/cache@v3
-        with:
-          path: target
-          key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v2
 
       - name: Build
         run: |
           cargo build --verbose --release
 
-      - name: Compress binaries
-        uses: svenstaro/upx-action@v2
-        with:
-          files: ${{ matrix.file }}
-          args: ${{ matrix.args }}
-          strip: ${{ matrix.strip }}
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2020-data-viewer-${{ matrix.os }}
-          path: ${{ matrix.file }}
-
-      - name: Build archive
+      - name: Package
         shell: bash
         run: |
-          # Replace with the name of your binary
-          binary_name="e2020-data-viewer"
-
-          dirname="$binary_name-${{ env.VERSION }}-${{ matrix.os }}"
+          dirname="e2020-data-viewer-${{ env.VERSION }}-${{ matrix.os }}"
           mkdir "$dirname"
-          mv ${{ matrix.file }} "$dirname"
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            7z a "$dirname.zip" "$dirname"
-            echo "ASSET=$dirname.zip" >> $GITHUB_ENV
-          else
-            tar -czf "$dirname.tar.gz" "$dirname"
-            echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
-          fi
+          cp ${{ matrix.file }} "$dirname"
+          tar -czvf "$dirname.tar.gz" "$dirname"
+          echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ${{ env.ASSET }}
+            e2020-data-viewer-${{ env.VERSION }}-${{ matrix.os }}
