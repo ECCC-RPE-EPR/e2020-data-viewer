@@ -1,0 +1,77 @@
+[package]
+name = "e2020-data-viewer"
+version = "0.1.0"
+edition = "2021"
+authors = ["Dheepak Krishnamurthy"]
+build = "build.rs"
+repository = "https://github.com/ECCC-RPE-EPR/e2020-data-viewer"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ratatui = { version = "0.26.3" }
+crossterm = { version = "0.27.0", features = ["event-stream", "serde"] }
+tokio = { version = "1.32.0", features = ["full"] }
+tokio-stream = "0.1.14"
+uuid = "1.4.1"
+unicode-segmentation = "1.10.1"
+lazy_static = "1.4.0"
+better-panic = "0.3.0"
+chrono = "0.4.29"
+clap = { version = "4.4.2", features = [
+  "derive",
+  "cargo",
+  "wrap_help",
+  "unicode",
+  "string",
+  "unstable-styles",
+] }
+dirs = "5.0.1"
+versions = "6.1.0"
+regex = "1.9.5"
+serde = "1.0.188"
+serde_json = "1.0.105"
+unicode-width = "0.1.10"
+unicode-truncate = "1.0.0"
+shellexpand = "3.1.0"
+shlex = "1.2.0"
+rand = "0.8.5"
+futures = "0.3.28"
+itertools = "0.13.0"
+hdf5 = { version = "0.8.1" }
+hdf5-sys = { version = "0.8.1", features = ["zlib", "static"] }
+ndarray = "0.15.6"
+tui-input = "0.8.0"
+tracing = "0.1.37"
+colored = "2.0.4"
+tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
+directories = "5.0.1"
+log = "0.4.20"
+approx = "0.5.1"
+env_logger = "0.11.1"
+tracing-macros = "0.0.0"
+libc = "0.2.147"
+cassowary = "0.3.0"
+signal-hook = "0.3.17"
+color-eyre = { version = "0.6.2", features = ["issue-url"] }
+strip-ansi-escapes = "0.2.0"
+tokio-util = "0.7.8"
+serde_derive = "1.0.188"
+tracing-error = "0.2.0"
+human-panic = "2.0.0"
+
+[profile.release]
+codegen-units = 1
+strip = true
+debug = 1
+incremental = true
+lto = "off"
+
+[[bin]]
+name = "e2020-data-viewer"
+path = "src/main.rs"
+
+[build-dependencies]
+vergen = { version = "8.3.1", features = [ "build", "git", "git2", "cargo" ]}
+
