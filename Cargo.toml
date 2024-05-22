@@ -5,7 +5,8 @@ edition = "2021"
 authors = ["Dheepak Krishnamurthy"]
 build = "build.rs"
 repository = "https://github.com/ECCC-RPE-EPR/e2020-data-viewer"
-
+description = "A TUI for viewing data from ENERGY2020"
+license = "GPL-3.0-or-later"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
