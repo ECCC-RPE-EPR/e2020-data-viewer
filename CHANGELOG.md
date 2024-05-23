@@ -2,17 +2,52 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.8](https://github.com/ECCC-RPE-EPR/e2020-data-viewer/compare/v0.1.7...v0.1.8) - 2024-05-23
+## [0.1.8] - 2024-05-22
 
-### Added
-- PageDown and PageUp ([#3](https://github.com/ECCC-RPE-EPR/e2020-data-viewer/pull/3))
+### 🚀 Features
 
-### Other
-- simplications
-- Update Cargo.toml
-- Update README.md
+- PageDown and PageUp (#3)
+
+### 🚜 Refactor
+
+- Simplications
+
+### 📚 Documentation
+
 - Update README
+- Update README.md
+
+### ⚙️ Miscellaneous Tasks
+
 - Delete Cross.toml
+- Update Cargo.toml
+- Release
+
+## [0.1.7] - 2024-05-22
+
+### ⚙️ Miscellaneous Tasks
+
+- Compress binaries
+
+### Build
+
+- _(release)_ Bump to v0.1.7
+
+## [0.1.6] - 2024-05-22
+
+### 📚 Documentation
+
+- Update CHANGELOG
+
+### ⚙️ Miscellaneous Tasks
+
+- Upload asset to release
+- Only on tag
+- Use env.ASSET
+
+### Build
+
+- _(release)_ Bump to v0.1.6
 
 ## [0.1.5] - 2024-05-22
 
@@ -26,7 +61,7 @@ All notable changes to this project will be documented in this file.
 
 ### Build
 
-- *(release)* Bump to v0.1.5
+- _(release)_ Bump to v0.1.5
 
 ## [0.1.4] - 2024-05-22
 
@@ -42,7 +77,7 @@ All notable changes to this project will be documented in this file.
 
 ### Build
 
-- *(release)* Bump to v0.1.4
+- _(release)_ Bump to v0.1.4
 
 ## [0.1.3] - 2024-05-22
 
@@ -56,7 +91,7 @@ All notable changes to this project will be documented in this file.
 
 ### Build
 
-- *(release)* Bump to v0.1.3
+- _(release)_ Bump to v0.1.3
 
 ## [0.1.2] - 2024-05-22
 
@@ -67,7 +102,7 @@ All notable changes to this project will be documented in this file.
 
 ### Build
 
-- *(release)* Bump to v0.1.2
+- _(release)_ Bump to v0.1.2
 
 ## [0.1.1] - 2024-05-22
 
