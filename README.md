@@ -18,7 +18,7 @@ https://github.com/ECCC-RPE-EPR/e2020-data-viewer/assets/1813121/3083e1b5-9fff-4
 - Download the precompiled binary from the latest release: https://github.com/ECCC-RPE-EPR/e2020-data-viewer/releases/latest
 - Extract the binary from a corresponding file based on your operating system.
 - Place the binary in a folder of your choice.
-  - Add the folder to your PATH
+  - (optional) Add the folder to your PATH
 
 ## Usage
 
