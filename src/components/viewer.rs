@@ -36,6 +36,7 @@ pub struct Viewer {
     pub mode: Mode,
     pub summary: Summary,
     pub select: Select,
+    pub page_height: Option<usize>,
 }
 
 impl Viewer {
@@ -186,7 +187,31 @@ impl Viewer {
         if self.nrow == 0 {
             self.state.select(None)
         } else {
-            self.state.select(Some(self.nrow + 1));
+            self.state.select(Some(self.nrow))
+        }
+    }
+
+    pub fn move_page_up(&mut self) {
+        if self.nrow == 0 {
+            self.state.select(None)
+        } else {
+            let new_height = match (self.state.selected(), self.page_height) {
+                (Some(s), Some(h)) => s.saturating_sub(h),
+                (_, _) => 0,
+            };
+            self.state.select(Some(new_height))
+        }
+    }
+
+    pub fn move_page_down(&mut self) {
+        if self.nrow == 0 {
+            self.state.select(None)
+        } else {
+            let new_height = match (self.state.selected(), self.page_height) {
+                (Some(s), Some(h)) => (s + h).min(self.nrow),
+                (_, _) => 0,
+            };
+            self.state.select(Some(new_height))
         }
     }
 
@@ -445,8 +470,8 @@ impl Component for Viewer {
                     KeyCode::Char('l') | KeyCode::Right => Action::MoveSelectionRight,
                     KeyCode::Home => Action::MoveSelectionHome,
                     KeyCode::End => Action::MoveSelectionEnd,
-                    KeyCode::PageUp => Action::MoveSelectionTop,
-                    KeyCode::PageDown => Action::MoveSelectionBottom,
+                    KeyCode::PageUp => Action::MoveSelectionPageUp,
+                    KeyCode::PageDown => Action::MoveSelectionPageDown,
                     KeyCode::Enter => Action::SubmitSelection,
                     KeyCode::Esc => Action::Close,
                     KeyCode::Char('.') => Action::ToggleFormattedData,
@@ -511,6 +536,14 @@ impl Component for Viewer {
                     }
                     Action::MoveSelectionBottom => {
                         self.move_bottom();
+                        self.initialize_state().unwrap();
+                    }
+                    Action::MoveSelectionPageUp => {
+                        self.move_page_up();
+                        self.initialize_state().unwrap();
+                    }
+                    Action::MoveSelectionPageDown => {
+                        self.move_page_down();
                         self.initialize_state().unwrap();
                     }
                     Action::MoveSelectionHome => {
@@ -629,6 +662,7 @@ impl Component for Viewer {
             .highlight_style(Modifier::REVERSED)
             .highlight_symbol(highlight_symbol);
 
+        self.page_height = Some(table_area.height.saturating_sub(4) as usize);
         f.render_stateful_widget(table, table_area, &mut self.state);
 
         if self.mode == Mode::Selection {
