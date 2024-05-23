@@ -478,6 +478,7 @@ dependencies = [
  "ndarray",
  "rand",
  "ratatui",
+ "ratatui-macros",
  "regex",
  "serde",
  "serde_derive",
@@ -1324,6 +1325,15 @@ dependencies = [
  "unicode-segmentation",
  "unicode-truncate",
  "unicode-width",
+]
+
+[[package]]
+name = "ratatui-macros"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "811ff16842940dc140ccece2f7ce9f06f51153a1da2086b0df83627fbf5d0f22"
+dependencies = [
+ "ratatui",
 ]
 
 [[package]]

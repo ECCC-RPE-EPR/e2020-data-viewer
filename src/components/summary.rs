@@ -3,6 +3,7 @@ use std::io::Stderr;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyEvent;
 use ratatui::{prelude::*, widgets::*};
+use ratatui_macros::{line, text};
 use tui_input::Input;
 
 use crate::{
@@ -59,23 +60,18 @@ impl Component for Summary {
                 .border_style(Style::default().add_modifier(Modifier::DIM)),
             rect,
         );
-        let rects = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([Constraint::Length(5), Constraint::Min(0)].as_ref())
-            .split(rect);
-        let top_rect = rects[0];
-        let bottom_rect = rects[1];
+        let [top_rect, bottom_rect] =
+            Layout::vertical([Constraint::Length(5), Constraint::Min(0)]).areas(rect);
 
-        let mut text = vec![];
-        text.push(Line::from(""));
-        text.push(Line::from(Span::styled(&self.name, Style::default())));
-        text.push(Line::from(Span::styled(
-            &self.doc,
-            Style::default()
-                .add_modifier(Modifier::BOLD)
-                .fg(Color::DarkGray),
-        )));
-        text.push(Line::from(
+        let text = text![
+            "",
+            self.name.clone(),
+            Span::styled(
+                &self.doc,
+                Style::default()
+                    .add_modifier(Modifier::BOLD)
+                    .fg(Color::DarkGray),
+            ),
             self.kvs
                 .iter()
                 .enumerate()
@@ -87,40 +83,16 @@ impl Component for Summary {
                     }
                 })
                 .collect::<Vec<Span>>(),
-        ));
-        f.render_widget(
-            Paragraph::new(text.clone()).alignment(Alignment::Center),
-            top_rect,
-        );
+        ];
+        f.render_widget(Paragraph::new(text).alignment(Alignment::Center), top_rect);
 
-        let rects = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints(
-                [
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
-                    Constraint::Length(10),
-                    Constraint::Percentage(50),
-                ]
-                .as_ref(),
-            )
-            .split(bottom_rect);
-        let left_rect = rects[0].inner(&Margin {
-            horizontal: 0,
-            vertical: 0,
-        });
-        let middle_left_rect = rects[1].inner(&Margin {
-            horizontal: 0,
-            vertical: 0,
-        });
-        let middle_right_rect = rects[2].inner(&Margin {
-            horizontal: 0,
-            vertical: 0,
-        });
-        let right_rect = rects[3].inner(&Margin {
-            horizontal: 0,
-            vertical: 0,
-        });
+        let [left_rect, middle_left_rect, middle_right_rect, right_rect] = Layout::horizontal([
+            Constraint::Percentage(25),
+            Constraint::Percentage(25),
+            Constraint::Length(10),
+            Constraint::Percentage(50),
+        ])
+        .areas(bottom_rect);
         let mut text_left = vec![];
         let mut text_middle_left = vec![];
         let mut text_middle_right = vec![];
@@ -163,19 +135,19 @@ impl Component for Summary {
         }
 
         f.render_widget(
-            Paragraph::new(text_left.clone()).alignment(Alignment::Right),
+            Paragraph::new(text_left).alignment(Alignment::Right),
             left_rect,
         );
         f.render_widget(
-            Paragraph::new(text_middle_left.clone()).alignment(Alignment::Left),
+            Paragraph::new(text_middle_left).alignment(Alignment::Left),
             middle_left_rect,
         );
         f.render_widget(
-            Paragraph::new(text_middle_right.clone()).alignment(Alignment::Right),
+            Paragraph::new(text_middle_right).alignment(Alignment::Right),
             middle_right_rect,
         );
         f.render_widget(
-            Paragraph::new(text_right.clone()).alignment(Alignment::Left),
+            Paragraph::new(text_right).alignment(Alignment::Left),
             right_rect,
         );
     }

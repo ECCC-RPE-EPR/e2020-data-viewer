@@ -13,6 +13,7 @@ use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers};
 use hdf5::types::{FixedUnicode, VarLenUnicode};
 use itertools::Itertools;
 use ratatui::{prelude::*, widgets::*};
+use ratatui_macros::line;
 use tokio::{sync::mpsc::UnboundedSender, task::JoinHandle};
 use tokio_util::sync::CancellationToken;
 use tui_input::{backend::crossterm::EventHandler, Input};
@@ -367,9 +368,8 @@ impl Component for Picker {
     }
 
     fn draw(&mut self, f: &mut Frame, rect: Rect) {
-        let rects = Layout::default()
-            .constraints([Constraint::Percentage(100), Constraint::Min(3)].as_ref())
-            .split(rect);
+        let [table_area, input_area] =
+            Layout::vertical([Constraint::Percentage(100), Constraint::Min(3)]).areas(rect);
         let header_cells = self.columns.iter().enumerate().map(|(i, h)| {
             if i == 0 {
                 if self.bold_first_row_col || self.bold_first_row {
@@ -431,7 +431,7 @@ impl Component for Picker {
             .highlight_symbol(highlight_symbol)
             .highlight_spacing(HighlightSpacing::Always);
 
-        f.render_stateful_widget(table, rects[0], &mut self.state);
+        f.render_stateful_widget(table, table_area, &mut self.state);
 
         if let Some(i) = self.state.selected() {
             let mut state = ScrollbarState::default()
@@ -439,35 +439,35 @@ impl Component for Picker {
                 .content_length(items.len());
             f.render_stateful_widget(
                 Scrollbar::default().track_symbol(Some("║")),
-                rects[0],
+                table_area,
                 &mut state,
             );
         }
-        let width = rects[1].width.max(3) - 3; // keep 2 for borders and 1 for cursor
+        let width = input_area.width.max(3) - 3; // keep 2 for borders and 1 for cursor
         let scroll = self.input.visual_scroll(width as usize);
         let input = Paragraph::new(self.input.value())
             .scroll((0, scroll as u16))
             .block(
                 Block::default()
                     .borders(Borders::ALL)
-                    .title(Line::from(vec![
-                        "Fuzzy Find ".into(),
-                        "(Press ".into(),
+                    .title(line![
+                        "Fuzzy Find (Press ",
                         "/".bold(),
-                        " to start, ".into(),
+                        " to start, ",
                         "ESC".bold(),
-                        " to finish)".into(),
-                    ]))
+                        " to finish)",
+                    ])
                     .border_style(match self.mode {
                         Mode::Editing => Style::default().fg(Color::Yellow),
                         _ => Style::default().add_modifier(Modifier::DIM),
                     }),
             );
-        f.render_widget(input, rects[1]);
+        f.render_widget(input, input_area);
         if self.mode == Mode::Editing {
             f.set_cursor(
-                (rects[1].x + 1 + self.input.cursor() as u16).min(rects[1].x + rects[1].width - 2),
-                rects[1].y + 1,
+                (input_area.x + 1 + self.input.cursor() as u16)
+                    .min(input_area.x + input_area.width - 2),
+                input_area.y + 1,
             )
         }
     }

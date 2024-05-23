@@ -3,6 +3,7 @@ use color_eyre::eyre::Result;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use ndarray::{prelude::*, s, Dimension, IxDyn, Slice, SliceInfo, SliceInfoElem};
 use ratatui::{prelude::*, widgets::*};
+use ratatui_macros::line;
 use tui_input::{backend::crossterm::EventHandler, Input};
 
 use super::{select::Select, summary::Summary, Component};
@@ -574,10 +575,10 @@ impl Component for Viewer {
             Constraint::Min(0)
         };
 
-        let rects = Layout::default()
-            .constraints([summary_constraint, Constraint::Percentage(100)].as_ref())
-            .split(rect);
-        self.summary.draw(f, rects[0]);
+        let [summary_area, table_area] = Layout::default()
+            .constraints([summary_constraint, Constraint::Percentage(100)])
+            .areas(rect);
+        self.summary.draw(f, summary_area);
 
         log::debug!("getting data");
         let items = self.data().unwrap();
@@ -591,9 +592,9 @@ impl Component for Viewer {
 
         let header_cells = columns.iter().enumerate().map(|(i, h)| {
             if i == 0 {
-                Cell::from(h.clone()).style(Style::default().fg(Color::Yellow))
+                Cell::from(line![h]).style(Style::default().fg(Color::Yellow))
             } else {
-                Cell::from(Line::from(h.clone()).alignment(Alignment::Right))
+                Cell::from(line![h].alignment(Alignment::Right))
                     .style(Style::default().add_modifier(Modifier::BOLD))
             }
         });
@@ -603,11 +604,11 @@ impl Component for Viewer {
             let mut cells: Vec<_> = item
                 .iter()
                 .enumerate()
-                .map(|(j, c)| Cell::from(Line::from(c.clone()).alignment(Alignment::Right)))
+                .map(|(j, c)| Cell::from(line![c].alignment(Alignment::Right)))
                 .collect();
             cells.insert(
                 0,
-                Cell::from(Line::from(rows[i].clone()).alignment(Alignment::Left))
+                Cell::from(line![&rows[i]].alignment(Alignment::Left))
                     .style(Style::default().add_modifier(Modifier::BOLD)),
             );
             Row::new(cells).height(height as u16)
@@ -617,9 +618,7 @@ impl Component for Viewer {
         let table = Table::new(rows, constraints)
             .header(header)
             .block(
-                Block::default()
-                    .borders(Borders::ALL)
-                    .style(Style::default())
+                Block::bordered()
                     .title("Viewer")
                     .border_style(if self.focus {
                         Style::default().fg(Color::Yellow)
@@ -627,21 +626,10 @@ impl Component for Viewer {
                         Style::default()
                     }),
             )
-            .highlight_style(Style::default().add_modifier(Modifier::REVERSED))
+            .highlight_style(Modifier::REVERSED)
             .highlight_symbol(highlight_symbol);
 
-        f.render_stateful_widget(table, rects[1], &mut self.state);
-
-        // let width = rects[2].width.max(3) - 3; // keep 2 for borders and 1 for cursor
-        // let scroll = self.input.visual_scroll(width as usize);
-        // let input = Paragraph::new(self.input.value())
-        //   .style(match self.mode {
-        //     Mode::Editing => Style::default().fg(Color::Yellow),
-        //     _ => Style::default(),
-        //   })
-        //   .scroll((0, scroll as u16))
-        //   .block(Block::default().borders(Borders::ALL).title(Line::from(vec![Span::raw("Select ")])));
-        // f.render_widget(input, rects[2]);
+        f.render_stateful_widget(table, table_area, &mut self.state);
 
         if self.mode == Mode::Selection {
             let tabs_area = rect.inner(&Margin {
