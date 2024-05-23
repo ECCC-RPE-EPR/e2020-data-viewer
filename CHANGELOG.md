@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.8](https://github.com/ECCC-RPE-EPR/e2020-data-viewer/compare/v0.1.7...v0.1.8) - 2024-05-23
+
+### Added
+- PageDown and PageUp ([#3](https://github.com/ECCC-RPE-EPR/e2020-data-viewer/pull/3))
+
+### Other
+- simplications
+- Update Cargo.toml
+- Update README.md
+- Update README
+- Delete Cross.toml
+
 ## [0.1.5] - 2024-05-22
 
 ### 📚 Documentation
