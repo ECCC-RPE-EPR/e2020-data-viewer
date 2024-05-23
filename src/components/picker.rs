@@ -49,6 +49,7 @@ pub struct Picker {
     pub cancellation_token: Option<CancellationToken>,
     pub action_tx: Option<UnboundedSender<Action>>,
     pub filtered_items: Vec<Vec<String>>,
+    pub page_height: Option<usize>,
 }
 
 impl Picker {
@@ -141,6 +142,30 @@ impl Picker {
             self.state.select(None)
         } else {
             self.state.select(Some(self.filtered_items().len() - 1));
+        }
+    }
+
+    pub fn page_up(&mut self) {
+        if self.filtered_items().is_empty() {
+            self.state.select(None)
+        } else {
+            let new_selection = match (self.state.selected(), self.page_height) {
+                (Some(s), Some(h)) => s.saturating_sub(h),
+                (_, _) => 0,
+            };
+            self.state.select(Some(new_selection));
+        }
+    }
+
+    pub fn page_down(&mut self) {
+        if self.filtered_items().is_empty() {
+            self.state.select(None)
+        } else {
+            let new_selection = match (self.state.selected(), self.page_height) {
+                (Some(s), Some(h)) => (s + h).min(self.filtered_items().len() - 1),
+                (_, _) => self.filtered_items().len() - 1,
+            };
+            self.state.select(Some(new_selection));
         }
     }
 
@@ -304,8 +329,10 @@ impl Component for Picker {
                 KeyCode::Char('k') | KeyCode::Up => Action::MoveSelectionPrevious,
                 KeyCode::Char('h') | KeyCode::Left => Action::MoveSelectionLeft,
                 KeyCode::Char('l') | KeyCode::Right => Action::MoveSelectionRight,
-                KeyCode::Char('g') | KeyCode::PageUp => Action::MoveSelectionTop,
-                KeyCode::Char('G') | KeyCode::PageDown => Action::MoveSelectionBottom,
+                KeyCode::Char('g') => Action::MoveSelectionTop,
+                KeyCode::Char('G') => Action::MoveSelectionBottom,
+                KeyCode::PageUp => Action::MoveSelectionPageUp,
+                KeyCode::PageDown => Action::MoveSelectionPageDown,
                 KeyCode::Char('r') => Action::ReloadData,
                 KeyCode::Char('v') => Action::ToggleSelection,
                 KeyCode::Home => Action::MoveSelectionHome,
@@ -337,6 +364,8 @@ impl Component for Picker {
             Action::MoveSelectionPrevious => self.previous(),
             Action::MoveSelectionTop => self.top(),
             Action::MoveSelectionBottom => self.bottom(),
+            Action::MoveSelectionPageUp => self.page_up(),
+            Action::MoveSelectionPageDown => self.page_down(),
             Action::ReloadData => {
                 self.cancel();
                 self.get_datasets();
@@ -431,6 +460,7 @@ impl Component for Picker {
             .highlight_symbol(highlight_symbol)
             .highlight_spacing(HighlightSpacing::Always);
 
+        self.page_height = Some(table_area.height.saturating_sub(4) as usize);
         f.render_stateful_widget(table, table_area, &mut self.state);
 
         if let Some(i) = self.state.selected() {
