@@ -705,7 +705,7 @@ dependencies = [
 [[package]]
 name = "hdf5"
 version = "0.8.1"
-source = "git+https://github.com/aldanor/hdf5-rust#694e900972fbf5ffbdd1a2294f57a2cc3a91c994"
+source = "git+https://github.com/aldanor/hdf5-rust#33c7a18155bf0ccf11dfe8412f59376619e292bc"
 dependencies = [
  "bitflags",
  "cfg-if",
@@ -722,7 +722,7 @@ dependencies = [
 [[package]]
 name = "hdf5-derive"
 version = "0.8.1"
-source = "git+https://github.com/aldanor/hdf5-rust#694e900972fbf5ffbdd1a2294f57a2cc3a91c994"
+source = "git+https://github.com/aldanor/hdf5-rust#33c7a18155bf0ccf11dfe8412f59376619e292bc"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -733,7 +733,7 @@ dependencies = [
 [[package]]
 name = "hdf5-src"
 version = "0.8.1"
-source = "git+https://github.com/aldanor/hdf5-rust#694e900972fbf5ffbdd1a2294f57a2cc3a91c994"
+source = "git+https://github.com/aldanor/hdf5-rust#33c7a18155bf0ccf11dfe8412f59376619e292bc"
 dependencies = [
  "cmake",
  "libz-sys",
@@ -742,7 +742,7 @@ dependencies = [
 [[package]]
 name = "hdf5-sys"
 version = "0.8.1"
-source = "git+https://github.com/aldanor/hdf5-rust#694e900972fbf5ffbdd1a2294f57a2cc3a91c994"
+source = "git+https://github.com/aldanor/hdf5-rust#33c7a18155bf0ccf11dfe8412f59376619e292bc"
 dependencies = [
  "hdf5-src",
  "libc",
@@ -758,7 +758,7 @@ dependencies = [
 [[package]]
 name = "hdf5-types"
 version = "0.8.1"
-source = "git+https://github.com/aldanor/hdf5-rust#694e900972fbf5ffbdd1a2294f57a2cc3a91c994"
+source = "git+https://github.com/aldanor/hdf5-rust#33c7a18155bf0ccf11dfe8412f59376619e292bc"
 dependencies = [
  "ascii",
  "cfg-if",
@@ -1454,18 +1454,18 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.202"
+version = "1.0.203"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "226b61a0d411b2ba5ff6d7f73a476ac4f8bb900373459cd00fab8512828ba395"
+checksum = "7253ab4de971e72fb7be983802300c30b5a7f0c2e56fab8abfc6a214307c0094"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.202"
+version = "1.0.203"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6048858004bcff69094cd972ed40a32500f153bd3be9f716b2eed2e8217c4838"
+checksum = "500cbc0ebeb6f46627f50f3f5811ccf6bf00643be300b4c3eabc0ef55dc5b5ba"
 dependencies = [
  "proc-macro2",
  "quote",
