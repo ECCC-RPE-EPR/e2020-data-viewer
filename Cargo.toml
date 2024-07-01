@@ -11,16 +11,16 @@ license = "GPL-3.0-or-later"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ratatui = { version = "0.26.3" }
+ratatui = { version = "0.27.0" }
 crossterm = { version = "0.27.0", features = ["event-stream", "serde"] }
 tokio = { version = "1.38.0", features = ["full"] }
 tokio-stream = "0.1.14"
-uuid = "1.4.1"
+uuid = "1.9.1"
 unicode-segmentation = "1.10.1"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
 better-panic = "0.3.0"
 chrono = "0.4.29"
-clap = { version = "4.5.7", features = [
+clap = { version = "4.5.8", features = [
   "derive",
   "cargo",
   "wrap_help",
@@ -29,10 +29,10 @@ clap = { version = "4.5.7", features = [
   "unstable-styles",
 ] }
 dirs = "5.0.1"
-versions = "6.1.0"
+versions = "6.3.0"
 regex = "1.10.5"
 serde = "1.0.203"
-serde_json = "1.0.105"
+serde_json = "1.0.120"
 unicode-width = "0.1.13"
 unicode-truncate = "1.0.0"
 shellexpand = "3.1.0"
@@ -51,12 +51,12 @@ hdf5-sys = { git = "https://github.com/aldanor/hdf5-rust", features = [
   "zlib",
 ] } # until a release is made
 ndarray = "0.15.6"
-tui-input = "0.8.0"
+tui-input = "0.9.0"
 tracing = "0.1.37"
 colored = "2.0.4"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 directories = "5.0.1"
-log = "0.4.20"
+log = "0.4.22"
 approx = "0.5.1"
 env_logger = "0.11.1"
 tracing-macros = "0.0.0"
@@ -69,7 +69,7 @@ tokio-util = "0.7.8"
 serde_derive = "1.0.188"
 tracing-error = "0.2.0"
 human-panic = "2.0.0"
-ratatui-macros = "0.4.0"
+ratatui-macros = "0.4.2"
 
 [profile.release]
 codegen-units = 1
